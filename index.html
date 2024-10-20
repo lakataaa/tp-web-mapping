@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Carte de Rabat avec OpenStreetMap</title>
+    <!-- Lien vers la feuille de style de Leaflet -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster/dist/MarkerCluster.css" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster/dist/MarkerCluster.Default.css" />
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f4f4;
+            color: #333;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        h1 {
+            font-size: 2.5em;
+            margin-bottom: 20px;
+            text-align: center;
+            color: #2c3e50; /* Darker shade for the header */
+        }
+
+        #map {
+            height: 600px;
+            width: 100%;
+            border-radius: 8px; /* Rounded corners */
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2); /* Shadow effect */
+        }
+
+        .leaflet-tooltip {
+            background-color: #fff; /* White background for tooltips */
+            border: 1px solid #ccc; /* Light gray border */
+            border-radius: 4px; /* Rounded corners */
+            font-size: 14px; /* Slightly larger font for better readability */
+            padding: 5px; /* Padding for tooltip */
+        }
+    </style>
+</head>
+<body>
+    <h1>Carte des écoles IAV Hassan II, INSEA, INPT, UM6P et ESI</h1>
+    <div id="map"></div>
+
+    <!-- Script Leaflet -->
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+    <script src="https://unpkg.com/leaflet.markercluster/dist/leaflet.markercluster.js"></script>
+    <script>
+        // Initialisation de la carte et centrage sur Rabat
+        var map = L.map('map').setView([33.980918715977865, -6.861351064790256], 13);
+
+        // Chargement de la carte depuis OpenStreetMap
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        }).addTo(map);
+
+        // Création d'un groupe de clusters
+        var markers = L.markerClusterGroup();
+
+        // Ajout des marqueurs pour les écoles avec les nouvelles coordonnées
+        var markerIAV = L.marker([33.97706842621815, -6.865153638442365]).bindTooltip("IAV Hassan II", { permanent: false, direction: 'top' });
+        var markerINSEA = L.marker([33.98256877001654, -6.862395136954177]).bindTooltip("INSEA", { permanent: false, direction: 'top' });
+        var markerINPT = L.marker([33.9801749204957, -6.867538204062896]).bindTooltip("INPT", { permanent: false, direction: 'top' });
+        var markerUM6P = L.marker([33.98263074709328, -6.868967153951246]).bindTooltip("UM6P", { permanent: false, direction: 'top' });
+        var markerESI = L.marker([33.98241058314552, -6.866400759653914]).bindTooltip("ESI", { permanent: false, direction: 'top' });
+
+        // Ajout des marqueurs au groupe de clusters
+        markers.addLayer(markerIAV);
+        markers.addLayer(markerINSEA);
+        markers.addLayer(markerINPT);
+        markers.addLayer(markerUM6P);
+        markers.addLayer(markerESI);
+
+        // Ajout du groupe de marqueurs sur la carte
+        map.addLayer(markers);
+
+        // Ajouter le nombre d'écoles dans le cluster
+        markers.on('clusterclick', function (event) {
+            alert('Nombre total d\'écoles : ' + event.layer.getChildCount());
+        });
+
+        // Créer les polygones autour des écoles
+        var polygonIAV = L.polygon([
+            [33.98162354495028, -6.8639759239027285],
+            [33.98085966233282, -6.862628234312865],
+            [33.98046357234705, -6.858943412142793],
+            [33.98016650364673, -6.858619284267178],
+            [33.97476250132925, -6.864231814331617],
+            [33.97442297139057, -6.863771211559936],
+            [33.972895069888565, -6.86496536689296],
+            [33.97148032179615, -6.865374791578688],
+            [33.97023638118871, -6.866316150380243],
+            [33.972878879440145, -6.870610812622118],
+            [33.97389373013243, -6.870957156351011],
+            [33.974966012042714, -6.870610812622118],
+            [33.98153344366324, -6.864053371350138]
+        ]).setStyle({ color: 'blue', fillOpacity: 0, weight: 0 }).addTo(map);
+
+        var polygonINSEA = L.polygon([
+            [33.980918715977865, -6.861351064790256],
+            [33.981785831279524, -6.8606856189948076],
+            [33.98239017913704, -6.8604321158356925],
+            [33.985044003649165, -6.861477816369842],
+            [33.985122828852724, -6.86182638321452],
+            [33.98207486774761, -6.864519854287835],
+            [33.98097126867252, -6.862491829008803],
+            [33.980918715977865, -6.861351064790256]
+        ]).setStyle({ color: 'green', fillOpacity: 0, weight: 0 }).addTo(map);
+
+        var polygonINPT = L.polygon([
+            [33.98134229325427, -6.8654139017608315],
+            [33.98100925964623, -6.865038190730331],
+            [33.98070845397491, -6.865012279625631],
+            [33.97776479945159, -6.8679791012064015],
+            [33.97911846346116, -6.8699613007788685],
+            [33.98163235372128, -6.868549145527652],
+            [33.981320807254264, -6.865439812866526]
+        ]).setStyle({ color: 'red', fillOpacity: 0, weight: 0 }).addTo(map);
+
+        var polygonUM6P = L.polygon([
+            [33.98266662563043, -6.8677449169922795],
+            [33.98364616257618, -6.86929537436788],
+            [33.9823987815313, -6.8702182656630555],
+            [33.98203910384197, -6.870199807837082],
+            [33.98193196551253, -6.869821422405124],
+            [33.98180186878861, -6.868474001115686],
+            [33.98259009883117, -6.867818748296315]
+        ]).setStyle({ color: 'orange', fillOpacity: 0, weight: 0 }).addTo(map);
+
+        var polygonESI = L.polygon([
+            [33.982368792541905, -6.864772162706629],
+            [33.98363119013092, -6.8667151433555205],
+            [33.98180384610086, -6.8683637329485805],
+            [33.981524858823065, -6.865545990531388],
+            [33.9816713272581, -6.865260010703281],
+            [33.982131654982524, -6.8647973962772255],
+            [33.98231299552306, -6.8647637515914255]
+        ]).setStyle({ color: 'purple', fillOpacity: 0, weight: 0 }).addTo(map);
+
+        // Afficher le polygone lors du survol du marqueur IAV
+        markerIAV.on('mouseover', function () {
+            polygonIAV.setStyle({ fillColor: '#3388ff', fillOpacity: 0.5, weight: 2 });
+        });
+
+        markerIAV.on('mouseout', function () {
+            polygonIAV.setStyle({ fillOpacity: 0, weight: 0 });
+        });
+
+        // Afficher le polygone lors du survol du marqueur INSEA
+        markerINSEA.on('mouseover', function () {
+            polygonINSEA.setStyle({ fillColor: '#33ff88', fillOpacity: 0.5, weight: 2 });
+        });
+
+        markerINSEA.on('mouseout', function () {
+            polygonINSEA.setStyle({ fillOpacity: 0, weight: 0 });
+        });
+
+        // Afficher le polygone lors du survol du marqueur INPT
+        markerINPT.on('mouseover', function () {
+            polygonINPT.setStyle({ fillColor: '#ff3333', fillOpacity: 0.5, weight: 2 });
+        });
+
+        markerINPT.on('mouseout', function () {
+            polygonINPT.setStyle({ fillOpacity: 0, weight: 0 });
+        });
+
+        // Afficher le polygone lors du survol du marqueur UM6P
+        markerUM6P.on('mouseover', function () {
+            polygonUM6P.setStyle({ fillColor: '#ffaa33', fillOpacity: 0.5, weight: 2 });
+        });
+
+        markerUM6P.on('mouseout', function () {
+            polygonUM6P.setStyle({ fillOpacity: 0, weight: 0 });
+        });
+
+        // Afficher le polygone lors du survol du marqueur ESI
+        markerESI.on('mouseover', function () {
+            polygonESI.setStyle({ fillColor: '#aa33ff', fillOpacity: 0.5, weight: 2 });
+        });
+
+        markerESI.on('mouseout', function () {
+            polygonESI.setStyle({ fillOpacity: 0, weight: 0 });
+        });
+    </script>
+</body>
+</html>
